@@ -287,7 +287,7 @@ if settings.startup["fluid-boilers"].value then
 			{
 				type = "recipe",
 				name = "fluid-boiler-2",
-				enabled = true,
+				enabled = false,
 				energy_required = 1,
 				ingredients = {	
 					{ "fluid-boiler", 1 },
@@ -314,7 +314,7 @@ if settings.startup["fluid-boilers"].value then
 			{
 				type = "recipe",
 				name = "fluid-boiler-3",
-				enabled = true,
+				enabled = false,
 				energy_required = 1,
 				ingredients = {	
 					{ "fluid-boiler-2", 1 },
