@@ -1,0 +1,14 @@
+{
+  "name": "Boilers-Extended",
+  "version": "1.0.0",
+  "title": "Boilers Extended",
+  "author": "James Fire",
+  "homepage": "",
+  "description": "Adds more boilers.",
+  "factorio_version": "1.1",
+  "dependencies": [
+	"base >= 0.18.0",
+	"LSlib"
+  ]
+}
+
