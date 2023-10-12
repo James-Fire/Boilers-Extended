@@ -4,6 +4,8 @@ local sounds = require("__base__.prototypes.entity.sounds")
 local util = require("__core__.lualib.util")
 
 data.raw.boiler["boiler"].fast_replaceable_group = "boiler"
+data.raw.boiler["heat-exchanger"].energy_consumption = "11.64MW"
+
 
 if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-pressure-boilers"].value then
 	--T2 boiler, outputs 60 500C steam. Enough for 1 steam turbine
@@ -27,6 +29,7 @@ if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-
 			ingredients = {
 				{ "boiler", 1 },
 				{ "steel-plate", 5 },
+				{ "pipe", 5 },
 			},
 			results = {{"boiler-2",1}},
 		},
@@ -74,7 +77,8 @@ if settings.startup["extreme-pressure-boilers"].value then
 			energy_required = 1,
 			ingredients = {
 				{ "boiler-2", 1 },
-				{ "steel-plate", 5 },
+				{ "steel-plate", 10 },
+				{ "pipe", 10 },
 			},
 			results = {{"boiler-3",1}},
 		},
@@ -99,11 +103,13 @@ if settings.startup["extreme-pressure-boilers"].value then
 		},
 	})
 	
+	
+	
 	--T2 Heat Exchanger, just outputs more steam
 	local heatexchanger = table.deepcopy(data.raw.boiler["heat-exchanger"])
 	heatexchanger.name = "extreme-heat-exchanger"
 	heatexchanger.minable.result = "extreme-heat-exchanger"
-	heatexchanger.energy_consumption = "11.64MW" --tostring(util.split(data.raw.boiler["heat-exchanger"].energy_consumption, "M")[1]*2).."MW"
+	heatexchanger.energy_consumption = "23.28MW" --tostring(util.split(data.raw.boiler["heat-exchanger"].energy_consumption, "M")[1]*2).."MW"
 	heatexchanger.max_transfer = "4GW"
 	
 	
@@ -119,7 +125,7 @@ if settings.startup["extreme-pressure-boilers"].value then
 			energy_required = 1,
 			ingredients = {	
 				{ "heat-exchanger", 2 },
-				{ "heat=pipe", 10 },
+				{ "heat-pipe", 10 },
 			},
 			results = {{"extreme-heat-exchanger",1}},
 		},
@@ -185,7 +191,10 @@ if settings.startup["electric-boilers"].value then
 				energy_required = 1,
 				ingredients = {
 					{ "electric-boiler", 1 },
-					{ "steel-plate", 5 },
+					{ "steel-plate", 10 },
+					{ "pipe", 10 },
+					{ "electronic-circuit", 5 },
+					{ "copper-cable", 20 },
 				},
 				results = {{"electric-boiler-2",1}},
 			},
@@ -212,7 +221,10 @@ if settings.startup["electric-boilers"].value then
 				energy_required = 1,
 				ingredients = {
 					{ "electric-boiler-2", 1 },
-					{ "steel-plate", 5 },
+					{ "steel-plate", 10 },
+					{ "pipe", 10 },
+					{ "electronic-circuit", 5 },
+					{ "copper-cable", 20 },
 				},
 				results = {{"electric-boiler-3",1}},
 			},
@@ -291,7 +303,8 @@ if settings.startup["fluid-boilers"].value then
 				energy_required = 1,
 				ingredients = {	
 					{ "fluid-boiler", 1 },
-					{ "pipe", 10 },
+					{ "steel-plate", 10 },
+					{ "pipe", 20 },
 				},
 				results = {{"fluid-boiler-2",1}},
 			},
@@ -318,7 +331,8 @@ if settings.startup["fluid-boilers"].value then
 				energy_required = 1,
 				ingredients = {	
 					{ "fluid-boiler-2", 1 },
-					{ "pipe", 10 },
+					{ "steel-plate", 10 },
+					{ "pipe", 20 },
 				},
 				results = {{"fluid-boiler-3",1}},
 			},
