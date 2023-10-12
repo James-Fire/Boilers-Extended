@@ -6,6 +6,7 @@ local util = require("__core__.lualib.util")
 data.raw.boiler["boiler"].fast_replaceable_group = "boiler"
 data.raw.boiler["heat-exchanger"].energy_consumption = "11.64MW"
 
+local emmisions = data.raw.boiler["boiler"].energy_source.emissions_per_minute
 
 if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-pressure-boilers"].value then
 	--T2 boiler, outputs 60 500C steam. Enough for 1 steam turbine
@@ -18,6 +19,7 @@ if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-
 	T2boiler.minable.result = "boiler-2"
 	T2boiler.target_temperature = 500
 	T2boiler.energy_consumption = "5.82MW"
+	T2boiler.energy_source.emissions_per_minute = emmisions*1.9
 	
 	
 	data:extend({T2boiler,T2boileritem,
@@ -68,6 +70,7 @@ if settings.startup["extreme-pressure-boilers"].value then
 	T3boiler.name = "boiler-3"
 	T3boiler.minable.result = "boiler-3"
 	T3boiler.energy_consumption = "11.64MW"
+	T3boiler.energy_source.emissions_per_minute = emmisions*2.8
 	
 	data:extend({T3boiler,T3boileritem,
 		{
@@ -293,6 +296,7 @@ if settings.startup["fluid-boilers"].value then
 		T2fluidboiler.minable.result = "fluid-boiler-2"
 		T2fluidboiler.target_temperature = 500
 		T2fluidboiler.energy_consumption = "5.82MW"
+		T2fluidboiler.energy_source.emissions_per_minute = emmisions*1.9
 		
 		
 		data:extend({T2fluidboiler,T2fluidboileritem,
@@ -321,6 +325,7 @@ if settings.startup["fluid-boilers"].value then
 		T3fluidboiler.name = "fluid-boiler-3"
 		T3fluidboiler.minable.result = "fluid-boiler-3"
 		T3fluidboiler.energy_consumption = "11.64MW"
+		T3fluidboiler.energy_source.emissions_per_minute = emmisions*2.8
 		
 		
 		data:extend({T3fluidboiler,T3fluidboileritem,
