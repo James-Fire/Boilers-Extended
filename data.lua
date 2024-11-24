@@ -1,4 +1,4 @@
-require("__LSlib__/LSlib")
+require("__LSlib_James_Fork__/LSlib")
 local hit_effects = require ("__base__.prototypes.entity.hit-effects")
 local sounds = require("__base__.prototypes.entity.sounds")
 local util = require("__core__.lualib.util")
@@ -6,7 +6,7 @@ local util = require("__core__.lualib.util")
 data.raw.boiler["boiler"].fast_replaceable_group = "boiler"
 data.raw.boiler["heat-exchanger"].energy_consumption = "11.64MW"
 
-local emmisions = data.raw.boiler["boiler"].energy_source.emissions_per_minute
+local emmisions = data.raw.boiler["boiler"].energy_source.emissions_per_minute.pollution
 
 if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-pressure-boilers"].value then
 	--T2 boiler, outputs 60 500C steam. Enough for 1 steam turbine
@@ -19,7 +19,7 @@ if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-
 	T2boiler.minable.result = "boiler-2"
 	T2boiler.target_temperature = 500
 	T2boiler.energy_consumption = "5.82MW"
-	T2boiler.energy_source.emissions_per_minute = emmisions*1.9
+	T2boiler.energy_source.emissions_per_minute = { pollution = emmisions*1.9 }
 	
 	
 	data:extend({T2boiler,T2boileritem,
@@ -29,11 +29,11 @@ if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-
 			enabled = false,
 			energy_required = 1,
 			ingredients = {
-				{ "boiler", 1 },
-				{ "steel-plate", 5 },
-				{ "pipe", 5 },
+				{ type="item", name="boiler", amount=1 },
+				{ type="item", name="steel-plate", amount=5 },
+				{ type="item", name="pipe", amount=5 },
 			},
-			results = {{"boiler-2",1}},
+			results = {{type="item", name="boiler-2", amount=1}},
 		},
 		{
 			type = "technology",
@@ -70,7 +70,7 @@ if settings.startup["extreme-pressure-boilers"].value then
 	T3boiler.name = "boiler-3"
 	T3boiler.minable.result = "boiler-3"
 	T3boiler.energy_consumption = "11.64MW"
-	T3boiler.energy_source.emissions_per_minute = emmisions*2.8
+	T3boiler.energy_source.emissions_per_minute = { pollution = emmisions*2.8 }
 	
 	data:extend({T3boiler,T3boileritem,
 		{
@@ -79,11 +79,11 @@ if settings.startup["extreme-pressure-boilers"].value then
 			enabled = false,
 			energy_required = 1,
 			ingredients = {
-				{ "boiler-2", 1 },
-				{ "steel-plate", 10 },
-				{ "pipe", 10 },
+				{ type="item", name="boiler-2", amount=1 },
+				{ type="item", name="steel-plate", amount=10 },
+				{ type="item", name="pipe", amount=10 },
 			},
-			results = {{"boiler-3",1}},
+			results = {{type="item", name="boiler-3", amount=1}},
 		},
 		{
 			type = "technology",
@@ -127,10 +127,10 @@ if settings.startup["extreme-pressure-boilers"].value then
 			enabled = false,
 			energy_required = 1,
 			ingredients = {	
-				{ "heat-exchanger", 2 },
-				{ "heat-pipe", 10 },
+				{ type="item", name="heat-exchanger", amount=2 },
+				{ type="item", name="heat-pipe", amount=10 },
 			},
-			results = {{"extreme-heat-exchanger",1}},
+			results = {{type="item", name="extreme-heat-exchanger", amount=1}},
 		},
 	})
 	LSlib.technology.addRecipeUnlock("extreme-pressure-boilers", "extreme-heat-exchanger")
@@ -149,7 +149,7 @@ if settings.startup["electric-boilers"].value then
 	electricboiler.energy_source = {
 		type = "electric",
 		usage_priority = "secondary-input",
-		emissions_per_minute = 1,
+		emissions_per_minute = { pollution = 1 },
 		light_flicker = {
 			color = {0,0,0},
 			minimum_intensity = 0.6,
@@ -164,11 +164,11 @@ if settings.startup["electric-boilers"].value then
 			enabled = false,
 			energy_required = 1,
 			ingredients = {
-				{ "boiler", 1 },
-				{ "electronic-circuit", 5 },
-				{ "copper-cable", 20 },
+				{ type="item", name="boiler", amount=1 },
+				{ type="item", name="electronic-circuit", amount=5 },
+				{ type="item", name="copper-cable", amount=20 },
 			},
-			results = {{"electric-boiler",1}},
+			results = {{type="item", name="electric-boiler", amount=1}},
 		},
 	})
 	LSlib.technology.addRecipeUnlock("electric-energy-distribution-1", "electric-boiler")
@@ -193,13 +193,13 @@ if settings.startup["electric-boilers"].value then
 				enabled = false,
 				energy_required = 1,
 				ingredients = {
-					{ "electric-boiler", 1 },
-					{ "steel-plate", 10 },
-					{ "pipe", 10 },
-					{ "electronic-circuit", 5 },
-					{ "copper-cable", 20 },
+					{ type="item", name="electric-boiler", amount=1 },
+					{ type="item", name="steel-plate", amount=10 },
+					{ type="item", name="pipe", amount=10 },
+					{ type="item", name="electronic-circuit", amount=5 },
+					{ type="item", name="copper-cable", amount=20 },
 				},
-				results = {{"electric-boiler-2",1}},
+				results = {{type="item", name="electric-boiler-2", amount=1}},
 			},
 		})
 
@@ -223,13 +223,13 @@ if settings.startup["electric-boilers"].value then
 				enabled = false,
 				energy_required = 1,
 				ingredients = {
-					{ "electric-boiler-2", 1 },
-					{ "steel-plate", 10 },
-					{ "pipe", 10 },
-					{ "electronic-circuit", 5 },
-					{ "copper-cable", 20 },
+					{ type="item", name="electric-boiler-2", amount=1 },
+					{ type="item", name="steel-plate", amount=10 },
+					{ type="item", name="pipe", amount=10 },
+					{ type="item", name="electronic-circuit", amount=5 },
+					{ type="item", name="copper-cable", amount=20 },
 				},
-				results = {{"electric-boiler-3",1}},
+				results = {{type="item", name="electric-boiler-3", amount=1}},
 			},
 		})
 	
@@ -250,18 +250,16 @@ if settings.startup["fluid-boilers"].value then
 		burns_fluid = true,
 		scale_fluid_usage = true,
 		type = "fluid",
-		emissions_per_minute = 30,
+		emissions_per_minute = { pollution = 30 },
 		light_flicker = {
 			color = {0,0,0},
 			minimum_intensity = 0.6,
 			maximum_intensity = 0.95
 		},
 		fluid_box = {
-			base_area = 1,
-			height = 2,
-			base_level = -1,
+			volume = 1000,
 			pipe_connections = {
-				{ type = "input", position = { 0, 1.5 } },
+				{ flow_direction = "input", direction = defines.direction.north, position = { 0, 0.75 } },
 			},
 			pipe_covers = pipecoverspictures(),
 			pipe_picture = assembler2pipepictures(),
@@ -277,10 +275,10 @@ if settings.startup["fluid-boilers"].value then
 			enabled = false,
 			energy_required = 1,
 			ingredients = {	
-				{ "boiler", 1 },
-				{ "pipe", 10 },
+				{ type="item", name="boiler", amount=1 },
+				{ type="item", name="pipe", amount=10 },
 			},
-			results = {{"fluid-boiler",1}},
+			results = {{type="item", name="fluid-boiler", amount=1}},
 		},
 	})
 	LSlib.technology.addRecipeUnlock("fluid-handling", "fluid-boiler")
@@ -296,7 +294,7 @@ if settings.startup["fluid-boilers"].value then
 		T2fluidboiler.minable.result = "fluid-boiler-2"
 		T2fluidboiler.target_temperature = 500
 		T2fluidboiler.energy_consumption = "5.82MW"
-		T2fluidboiler.energy_source.emissions_per_minute = emmisions*1.9
+		T2fluidboiler.energy_source.emissions_per_minute = { pollution = emmisions*1.9 }
 		
 		
 		data:extend({T2fluidboiler,T2fluidboileritem,
@@ -306,11 +304,11 @@ if settings.startup["fluid-boilers"].value then
 				enabled = false,
 				energy_required = 1,
 				ingredients = {	
-					{ "fluid-boiler", 1 },
-					{ "steel-plate", 10 },
-					{ "pipe", 20 },
+					{ type="item", name="fluid-boiler", amount=1 },
+					{ type="item", name="steel-plate", amount=10 },
+					{ type="item", name="pipe", amount=20 },
 				},
-				results = {{"fluid-boiler-2",1}},
+				results = {{type="item", name="fluid-boiler-2", amount=1}},
 			},
 		})
 		LSlib.technology.addRecipeUnlock("high-pressure-boilers", "fluid-boiler-2")
@@ -325,7 +323,7 @@ if settings.startup["fluid-boilers"].value then
 		T3fluidboiler.name = "fluid-boiler-3"
 		T3fluidboiler.minable.result = "fluid-boiler-3"
 		T3fluidboiler.energy_consumption = "11.64MW"
-		T3fluidboiler.energy_source.emissions_per_minute = emmisions*2.8
+		T3fluidboiler.energy_source.emissions_per_minute = { pollution = emmisions*2.8 }
 		
 		
 		data:extend({T3fluidboiler,T3fluidboileritem,
@@ -335,11 +333,11 @@ if settings.startup["fluid-boilers"].value then
 				enabled = false,
 				energy_required = 1,
 				ingredients = {	
-					{ "fluid-boiler-2", 1 },
-					{ "steel-plate", 10 },
-					{ "pipe", 20 },
+					{ type="item", name="fluid-boiler-2", amount=1 },
+					{ type="item", name="steel-plate", amount=10 },
+					{ type="item", name="pipe", amount=20 },
 				},
-				results = {{"fluid-boiler-3",1}},
+				results = {{type="item", name="fluid-boiler-3", amount=1}},
 			},
 		})
 	
