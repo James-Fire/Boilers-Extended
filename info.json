@@ -4,7 +4,7 @@
   "title": "Boilers Extended",
   "author": "James Fire",
   "homepage": "",
-  "description": "Adds more boilers.",
+  "description": "Has settings to add more tiers and types of boilers. Customizeable.",
   "factorio_version": "2.0",
   "dependencies": [
 	"base >= 0.18.0",

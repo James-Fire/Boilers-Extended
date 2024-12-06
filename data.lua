@@ -7,6 +7,11 @@ data.raw.boiler["boiler"].fast_replaceable_group = "boiler"
 data.raw.boiler["heat-exchanger"].energy_consumption = "11.64MW"
 
 local emmisions = data.raw.boiler["boiler"].energy_source.emissions_per_minute.pollution
+local TierRecipes = { --Collect all the recipes so we can change ingredients later
+	["T1"] = { "boiler" },
+	["T2"] = { "heat-exchanger" },
+	["T3"] = { },
+}
 
 if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-pressure-boilers"].value then
 	--T2 boiler, outputs 60 500C steam. Enough for 1 steam turbine
@@ -30,8 +35,6 @@ if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-
 			energy_required = 1,
 			ingredients = {
 				{ type="item", name="boiler", amount=1 },
-				{ type="item", name="steel-plate", amount=5 },
-				{ type="item", name="pipe", amount=5 },
 			},
 			results = {{type="item", name="boiler-2", amount=1}},
 		},
@@ -55,6 +58,7 @@ if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-
 			order = "a",
 		},
 	})
+	table.insert(TierRecipes["T2"], "boiler-2")
 	LSlib.technology.moveRecipeUnlock("nuclear-power", "high-pressure-boilers", "steam-turbine")
 	LSlib.technology.addPrerequisite("nuclear-power", "high-pressure-boilers")
 	LSlib.technology.changeCount("nuclear-power", data.raw.technology["nuclear-power"].unit.count-200)
@@ -80,8 +84,6 @@ if settings.startup["extreme-pressure-boilers"].value then
 			energy_required = 1,
 			ingredients = {
 				{ type="item", name="boiler-2", amount=1 },
-				{ type="item", name="steel-plate", amount=10 },
-				{ type="item", name="pipe", amount=10 },
 			},
 			results = {{type="item", name="boiler-3", amount=1}},
 		},
@@ -105,7 +107,7 @@ if settings.startup["extreme-pressure-boilers"].value then
 			order = "a",
 		},
 	})
-	
+	table.insert(TierRecipes["T3"], "boiler-3")
 	
 	
 	--T2 Heat Exchanger, just outputs more steam
@@ -127,14 +129,15 @@ if settings.startup["extreme-pressure-boilers"].value then
 			enabled = false,
 			energy_required = 1,
 			ingredients = {	
-				{ type="item", name="heat-exchanger", amount=2 },
+				{ type="item", name="heat-exchanger", amount=1 },
 				{ type="item", name="heat-pipe", amount=10 },
 			},
 			results = {{type="item", name="extreme-heat-exchanger", amount=1}},
 		},
 	})
+	table.insert(TierRecipes["T3"], "extreme-heat-exchanger")
 	LSlib.technology.addRecipeUnlock("extreme-pressure-boilers", "extreme-heat-exchanger")
-
+	
 end
 
 if settings.startup["electric-boilers"].value then
@@ -165,12 +168,11 @@ if settings.startup["electric-boilers"].value then
 			energy_required = 1,
 			ingredients = {
 				{ type="item", name="boiler", amount=1 },
-				{ type="item", name="electronic-circuit", amount=5 },
-				{ type="item", name="copper-cable", amount=20 },
 			},
 			results = {{type="item", name="electric-boiler", amount=1}},
 		},
 	})
+	table.insert(TierRecipes["T1"], "electric-boiler")
 	LSlib.technology.addRecipeUnlock("electric-energy-distribution-1", "electric-boiler")
 
 
@@ -194,14 +196,11 @@ if settings.startup["electric-boilers"].value then
 				energy_required = 1,
 				ingredients = {
 					{ type="item", name="electric-boiler", amount=1 },
-					{ type="item", name="steel-plate", amount=10 },
-					{ type="item", name="pipe", amount=10 },
-					{ type="item", name="electronic-circuit", amount=5 },
-					{ type="item", name="copper-cable", amount=20 },
 				},
 				results = {{type="item", name="electric-boiler-2", amount=1}},
 			},
 		})
+		table.insert(TierRecipes["T2"], "electric-boiler-2")
 
 		LSlib.technology.addRecipeUnlock("high-pressure-boilers", "electric-boiler-2")
 	end
@@ -224,14 +223,11 @@ if settings.startup["electric-boilers"].value then
 				energy_required = 1,
 				ingredients = {
 					{ type="item", name="electric-boiler-2", amount=1 },
-					{ type="item", name="steel-plate", amount=10 },
-					{ type="item", name="pipe", amount=10 },
-					{ type="item", name="electronic-circuit", amount=5 },
-					{ type="item", name="copper-cable", amount=20 },
 				},
 				results = {{type="item", name="electric-boiler-3", amount=1}},
 			},
 		})
+		table.insert(TierRecipes["T3"], "electric-boiler-3")
 	
 		LSlib.technology.addRecipeUnlock("extreme-pressure-boilers", "electric-boiler-3")
 	end
@@ -276,11 +272,11 @@ if settings.startup["fluid-boilers"].value then
 			energy_required = 1,
 			ingredients = {	
 				{ type="item", name="boiler", amount=1 },
-				{ type="item", name="pipe", amount=10 },
 			},
 			results = {{type="item", name="fluid-boiler", amount=1}},
 		},
 	})
+	table.insert(TierRecipes["T1"], "fluid-boiler")
 	LSlib.technology.addRecipeUnlock("fluid-handling", "fluid-boiler")
 
 	if settings.startup["high-pressure-boilers"].value or settings.startup["extreme-pressure-boilers"].value then
@@ -305,12 +301,11 @@ if settings.startup["fluid-boilers"].value then
 				energy_required = 1,
 				ingredients = {	
 					{ type="item", name="fluid-boiler", amount=1 },
-					{ type="item", name="steel-plate", amount=10 },
-					{ type="item", name="pipe", amount=20 },
 				},
 				results = {{type="item", name="fluid-boiler-2", amount=1}},
 			},
 		})
+		table.insert(TierRecipes["T2"], "fluid-boiler-2")
 		LSlib.technology.addRecipeUnlock("high-pressure-boilers", "fluid-boiler-2")
 	end
 	if settings.startup["extreme-pressure-boilers"].value then
@@ -334,20 +329,54 @@ if settings.startup["fluid-boilers"].value then
 				energy_required = 1,
 				ingredients = {	
 					{ type="item", name="fluid-boiler-2", amount=1 },
-					{ type="item", name="steel-plate", amount=10 },
-					{ type="item", name="pipe", amount=20 },
 				},
 				results = {{type="item", name="fluid-boiler-3", amount=1}},
 			},
 		})
+		table.insert(TierRecipes["T3"], "fluid-boiler-3")
 	
 		LSlib.technology.addRecipeUnlock("extreme-pressure-boilers", "fluid-boiler-3")
 	end
 end
+if(mods["space-age"]) then
+	--Do space age tech tech
+	LSlib.technology.addPrerequisite("extreme-pressure-boilers", "tungsten-carbide") --Extreme Pressure Boilers require Tungsten Carbide
+end
+--Do recipes, standardizing boiler costs
+for i, tiers in pairs(TierRecipes) do  --Do stuff to all boilers
+	for j, boilers in pairs(tiers) do
+		LSlib.recipe.addIngredient(boilers, "steel-plate", 10)
+		LSlib.recipe.addIngredient(boilers, "pipe", 10)
+		if boilers:find("fluid", 1, true) then --Only to fluid boilers
+			LSlib.recipe.editIngredient(boilers, "pipe", "pipe", 2)
+		elseif boilers:find("electric", 1, true) then --Only to electric boilers
+			LSlib.recipe.addIngredient(boilers, "electronic-circuit", 5)
+			LSlib.recipe.addIngredient(boilers, "copper-cable", 30)
+		elseif boilers:find("boiler", 1, true) then --Only to normal boilers
+		
+		elseif boilers:find("exchanger", 1, true) then --Only to heat exchangers
+		
+		end
+	end
+end
+for i, boilers in pairs(TierRecipes["T1"]) do --Do stuff to all T1 boilers
+	LSlib.recipe.editIngredient(boilers, "steel-plate", "iron-plate", 1) --T1 boilers use iron, to keep it simple
+end
+for i, boilers in pairs(TierRecipes["T2"]) do --Do stuff to all T2 boilers
 
---[[if settings.startup["thermal-boilers"].value then
+end
+for i, boilers in pairs(TierRecipes["T3"]) do --Do stuff to all T3 boilers
+	if(mods["space-age"]) then
+		LSlib.recipe.editIngredient(boilers, "steel-plate", "tungsten-carbide", 1) --T3 boilers use tungsten carbide, if Space Age is active
+	end
+end
+--[[
+if settings.startup["thermal-boilers"].value then
 	--Boiler that outputs heat instead of steam
-	data:extend({
+	local fluidboileritem = table.deepcopy(data.raw.item["boiler"])
+	fluidboileritem.name = "thermal-boiler"
+	fluidboileritem.place_result = "thermal-boiler"
+	data:extend({fluidboileritem,
 	{
     type = "reactor",
     name = "thermal-boiler",
@@ -429,4 +458,5 @@ end
 		--T3 heat boiler
 	
 	end
-end]]
+end
+]]

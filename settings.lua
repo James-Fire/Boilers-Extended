@@ -13,6 +13,7 @@ data:extend({
 		default_value = true,
 		order = "a-2",
 	},
+	--[[
 	{
 		type = "bool-setting",
 		name = "thermal-boilers",
@@ -20,6 +21,7 @@ data:extend({
 		default_value = true,
 		order = "a-3",
 	},
+	]]
 	{
 		type = "bool-setting",
 		name = "high-pressure-boilers",
@@ -32,7 +34,7 @@ data:extend({
 		name = "extreme-pressure-boilers",
 		setting_type = "startup",
 		default_value = true,
-		hidden = true,
+		--hidden = true,
 		order = "a-5",
 	},
 })
